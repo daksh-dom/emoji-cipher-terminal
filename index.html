@@ -2,18 +2,25 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Emoji Cipher System</title>
 
 <style>
-* { margin:0; padding:0; box-sizing:border-box; }
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
 body {
     background:black;
     font-family: "Courier New", monospace;
     color:#00ffcc;
+    height:100vh;
+    overflow:hidden;
 }
 
-/* 🔴 LOADING SCREEN */
+/* 🔴 LOADING */
 #loading {
     position:fixed;
     width:100%;
@@ -36,50 +43,58 @@ body {
     50% { opacity:0; }
 }
 
-/* 🟢 MAIN UI */
+/* 🟢 MAIN */
 #app {
     display:none;
-    padding:20px;
+    height:100vh;
+    width:100vw;
+    display:flex;
+    flex-direction:column;
 }
 
-.container {
-    max-width:900px;
-    margin:auto;
-    border:1px solid #00ffcc;
-    padding:25px;
-    box-shadow:0 0 25px #00ffcc;
-    border-radius:10px;
-}
-
+/* HEADER */
 h1 {
     text-align:center;
-    margin-bottom:20px;
+    padding:15px;
     text-shadow:0 0 10px #00ffcc;
 }
 
+/* MAIN CONTENT */
+.container {
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    padding:15px;
+    gap:15px;
+}
+
+/* INPUT */
 textarea {
+    flex:1;
     width:100%;
-    height:120px;
     background:black;
     color:#00ffcc;
     border:1px solid #00ffcc;
     padding:12px;
-    margin-bottom:15px;
-    border-radius:10px;
+    font-size:16px;
+    resize:none;
 }
 
+/* BUTTONS */
 .buttons {
     display:flex;
+    flex-wrap:wrap;
     justify-content:center;
     gap:10px;
-    flex-wrap:wrap;
 }
 
 button {
+    flex:1;
+    min-width:120px;
     background:black;
     color:#00ffcc;
     border:1px solid #00ffcc;
-    padding:10px 20px;
+    padding:12px;
     cursor:pointer;
     transition:0.3s;
 }
@@ -90,15 +105,16 @@ button:hover {
     box-shadow:0 0 10px #00ffcc;
 }
 
+/* OUTPUT */
 .output {
-    margin-top:20px;
+    flex:1;
     border:1px solid #00ffcc;
     padding:15px;
-    min-height:80px;
+    overflow:auto;
     word-wrap:break-word;
 }
 
-/* scanline effect */
+/* SCANLINES */
 body::after {
     content:"";
     position:fixed;
@@ -113,12 +129,24 @@ body::after {
     );
     pointer-events:none;
 }
+
+/* 📱 MOBILE TWEAKS */
+@media (max-width:600px) {
+    h1 {
+        font-size:16px;
+    }
+
+    button {
+        font-size:14px;
+        padding:10px;
+    }
+}
 </style>
 </head>
 
 <body>
 
-<!-- 🔴 LOADING -->
+<!-- LOADING -->
 <div id="loading">
     <div class="blink">⚠ SYSTEM BREACH DETECTED ⚠</div>
     <br>
@@ -127,11 +155,11 @@ body::after {
     <div>Loading interface...</div>
 </div>
 
-<!-- 🟢 MAIN -->
+<!-- MAIN -->
 <div id="app">
-<div class="container">
 <h1>⚡ EMOJI CIPHER TERMINAL ⚡</h1>
 
+<div class="container">
 <textarea id="input" placeholder="Enter text or emoji..."></textarea>
 
 <div class="buttons">
@@ -145,13 +173,13 @@ body::after {
 </div>
 
 <script>
-// loading animation
+// loading
 setTimeout(() => {
     document.getElementById("loading").style.display = "none";
-    document.getElementById("app").style.display = "block";
-}, 3500);
+    document.getElementById("app").style.display = "flex";
+}, 3000);
 
-// emoji map
+// map
 const map = {
 "a":"🐉","b":"🍀","c":"🌙","d":"⚡","e":"🔥","f":"❄️","g":"🌊","h":"🐺",
 "i":"🧿","j":"🦂","k":"🗡️","l":"🕷️","m":"🌪️","n":"🦴","o":"🪐","p":"🧪",
