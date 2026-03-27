@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Emoji Cipher System</title>
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+    background:black;
+    font-family: "Courier New", monospace;
+    color:#00ffcc;
+}
+
+/* 🔴 LOADING SCREEN */
+#loading {
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:black;
+    color:red;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    font-size:18px;
+    z-index:999;
+}
+
+.blink {
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    50% { opacity:0; }
+}
+
+/* 🟢 MAIN UI */
+#app {
+    display:none;
+    padding:20px;
+}
+
+.container {
+    max-width:900px;
+    margin:auto;
+    border:1px solid #00ffcc;
+    padding:25px;
+    box-shadow:0 0 25px #00ffcc;
+}
+
+h1 {
+    text-align:center;
+    margin-bottom:20px;
+    text-shadow:0 0 10px #00ffcc;
+}
+
+textarea {
+    width:100%;
+    height:120px;
+    background:black;
+    color:#00ffcc;
+    border:1px solid #00ffcc;
+    padding:12px;
+    margin-bottom:15px;
+}
+
+.buttons {
+    display:flex;
+    justify-content:center;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+button {
+    background:black;
+    color:#00ffcc;
+    border:1px solid #00ffcc;
+    padding:10px 20px;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover {
+    background:#00ffcc;
+    color:black;
+    box-shadow:0 0 10px #00ffcc;
+}
+
+.output {
+    margin-top:20px;
+    border:1px solid #00ffcc;
+    padding:15px;
+    min-height:80px;
+    word-wrap:break-word;
+}
+
+/* scanline effect */
+body::after {
+    content:"";
+    position:fixed;
+    width:100%;
+    height:100%;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0,255,204,0.05),
+        rgba(0,255,204,0.05) 1px,
+        transparent 1px,
+        transparent 3px
+    );
+    pointer-events:none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🔴 LOADING -->
+<div id="loading">
+    <div class="blink">⚠ SYSTEM BREACH DETECTED ⚠</div>
+    <br>
+    <div>Initializing secure emoji protocol...</div>
+    <div class="blink">Decrypting channels...</div>
+    <div>Loading interface...</div>
+</div>
+
+<!-- 🟢 MAIN -->
+<div id="app">
+<div class="container">
+<h1>⚡ EMOJI CIPHER TERMINAL ⚡</h1>
+
+<textarea id="input" placeholder="Enter text or emoji..."></textarea>
+
+<div class="buttons">
+<button onclick="toEmoji()">Encode</button>
+<button onclick="toText()">Decode</button>
+<button onclick="copyOutput()">Copy</button>
+</div>
+
+<div class="output" id="output"></div>
+</div>
+</div>
+
+<script>
+// loading animation
+setTimeout(() => {
+    document.getElementById("loading").style.display = "none";
+    document.getElementById("app").style.display = "block";
+}, 3500);
+
+// emoji map
+const map = {
+"a":"🐉","b":"🍀","c":"🌙","d":"⚡","e":"🔥","f":"❄️","g":"🌊","h":"🐺",
+"i":"🧿","j":"🦂","k":"🗡️","l":"🕷️","m":"🌪️","n":"🦴","o":"🪐","p":"🧪",
+"q":"🧬","r":"🛸","s":"🐍","t":"⏳","u":"🦠","v":"🪶","w":"🧱","x":"⚙️",
+"y":"🪞","z":"🧯",
+"0":"🥀","1":"🍎","2":"🍊","3":"🍋","4":"🍇",
+"5":"🍉","6":"🍓","7":"🫐","8":"🍒","9":"🥭",
+" ":"🌑",",":"🌒",".":"🌓"
+};
+
+const reverseMap = {};
+for (let key in map) reverseMap[map[key]] = key;
+
+// encode
+function toEmoji() {
+    let input = document.getElementById("input").value.toLowerCase();
+    let result = "";
+    for (let char of input) result += map[char] || char;
+    document.getElementById("output").innerText = result;
+}
+
+// decode
+function toText() {
+    let input = document.getElementById("input").value;
+    let result = "";
+
+    while (input.length > 0) {
+        let matched = false;
+
+        for (let emoji in reverseMap) {
+            if (input.startsWith(emoji)) {
+                result += reverseMap[emoji];
+                input = input.slice(emoji.length);
+                matched = true;
+                break;
+            }
+        }
+
+        if (!matched) input = input.slice(1);
+    }
+
+    document.getElementById("output").innerText = result;
+}
+
+// copy
+function copyOutput() {
+    let text = document.getElementById("output").innerText;
+    navigator.clipboard.writeText(text);
+}
+</script>
+
+</body>
+</html>
